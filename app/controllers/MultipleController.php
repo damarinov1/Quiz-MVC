@@ -2,11 +2,20 @@
 
 class MultipleController
 {
-
+    private $questionRepo;
+    private $answerRepo;
+    
+    public function __construct(QuestionRepository $questionRepo, AnswerRepository $answerRepo)
+    {
+        echo __CLASS__ . "<br>";
+        $this->questionRepo = $questionRepo;
+        $this->answerRepo = $answerRepo;
+    }
+    
     public function index()
     {
         $excluded = Session::getExcluded();
-        $randQuestion = QuestionRepository::getInstance()->findRandom($excluded);
+        $randQuestion = container()->get("questionRepo")->findRandom($excluded);
 
         if ($randQuestion instanceof Question) {
             Session::addToExluded($randQuestion->getId());
@@ -15,14 +24,14 @@ class MultipleController
         }
 
         $correctAnswerId = $randQuestion->getAnswerId();
-        $correctAnswer = AnswerRepository::getInstance()->find($correctAnswerId);
-        $randomAnswer1 = AnswerRepository::getInstance()->findRandom();
+        $correctAnswer = container()->get("answerRepo")->find($correctAnswerId);
+        $randomAnswer1 = container()->get("answerRepo")->findRandom();
 
         if ($randomAnswer1->getId() == $correctAnswerId) {
-            $randomAnswer1 = AnswerRepository::getInstance()->findRandom();
+            $randomAnswer1 = container()->get("answerRepo")->findRandom();
         }
         do {
-            $randomAnswer2 = AnswerRepository::getInstance()->findRandom();
+            $randomAnswer2 = container()->get("answerRepo")->findRandom();
         } while ($randomAnswer1->getId() == $randomAnswer2->getId() ||
         $randomAnswer2->getId() == $correctAnswerId);
 
@@ -37,7 +46,7 @@ class MultipleController
 
     public function checkAnswer()
     {
-        $correntAnswerId = QuestionRepository::getInstance()->find($_POST['question'])->getAnswerId();
+        $correntAnswerId = container()->get("questionRepo")->find($_POST['question'])->getAnswerId();
         $answer = $_POST['answer'];
 
         AnswerCheck::answerCheckMc($correntAnswerId, $answer);

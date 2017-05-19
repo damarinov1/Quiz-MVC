@@ -2,12 +2,21 @@
 
 class SingleController
 {
+    private $questionRepo;
+    private $answerRepo;
+    
+    public function __construct(QuestionRepository $questionRepo, AnswerRepository $answerRepo)
+    {
+        echo __CLASS__ . "<br>";
+        $this->questionRepo = $questionRepo;
+        $this->answerRepo = $answerRepo;
+    }
 
     public function index()
     {
         $excluded = Session::getExcluded();
 
-        $randQuestion = QuestionRepository::getInstance()->findRandom($excluded);
+        $randQuestion = container()->get("questionRepo")->findRandom($excluded);
 
         if ($randQuestion instanceof Question) {
             Session::addToExluded($randQuestion->getId());
@@ -15,7 +24,7 @@ class SingleController
             Session::resetExcluded();
         }
 
-        $answer = AnswerRepository::getInstance()->findRandom();
+        $answer = container()->get("answerRepo")->findRandom();
 
         return View::render("single", [
                 "question" => $randQuestion,
@@ -25,7 +34,7 @@ class SingleController
 
     public function checkAnswer()
     {
-        $correctAnswerId = QuestionRepository::getInstance()->find($_POST['question'])->getAnswerId();
+        $correctAnswerId = container()->get("questionRepo")->find($_POST['question'])->getAnswerId();
 
         $answer = $_POST['answer'];
         $answer_input = $_POST['answer_input'];

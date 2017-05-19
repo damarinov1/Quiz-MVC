@@ -3,9 +3,8 @@
 class AnswerRepository extends AbstractRepository
 {
 
-    protected static $instance = null;
     private $model = "Answer";
-
+    
     public function find($id)
     {
         $query = "SELECT * FROM answers WHERE id=? LIMIT 1";

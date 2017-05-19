@@ -9,22 +9,9 @@ abstract class AbstractRepository
      */
     protected $db;
 
-    private function __construct()
+    public function __construct(Database $db)
     {
-        $this->db = Database::getInstance();
-    }
-
-    /**
-     * 
-     * @return $this
-     */
-    public static function getInstance()
-    {
-        if (static::$instance === null) {
-            static::$instance = new static;
-        }
-
-        return static::$instance;
+        $this->db = $db;
     }
 
     abstract function find($id);

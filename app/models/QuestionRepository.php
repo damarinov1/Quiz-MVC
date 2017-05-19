@@ -3,9 +3,8 @@
 class QuestionRepository extends AbstractRepository
 {
 
-    protected static $instance = null;
     private $model = "Question";
-
+    
     /**
      * 
      * @param type $id

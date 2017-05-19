@@ -48,25 +48,3 @@ class ServiceContainer
         return $this->instances[$name];
     }
 }
-
-
-class A {
-    public function __construct()
-    {
-        echo __CLASS__ . " it works! <br>";
-    }
-}
-
-class B {
-    /**
-     * 
-     * @param A $a
-     */
-    public function __construct(A $a)
-    {
-        echo __CLASS__ . " <br>";
-    }
-}
-
-
-

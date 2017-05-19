@@ -43,8 +43,8 @@ class AnswerCheck
         if (!empty($excluded) && count($excluded) > 1) {
             end($excluded);
             $previousQuestionId = prev($excluded);
-            $questionObj = QuestionRepository::getInstance()->find($previousQuestionId);
-            $previousAnswer = AnswerRepository::getInstance()->find($questionObj->getAnswerId());
+            $questionObj = container()->get("questionRepo")->find($previousQuestionId);
+            $previousAnswer = container()->get("answerRepo")->find($questionObj->getAnswerId());
         }
 
         return $previousAnswer;
